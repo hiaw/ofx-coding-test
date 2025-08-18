@@ -2,6 +2,7 @@ import { useState } from 'react';
 import DropDown from '../../Components/DropDown';
 import ProgressBar from '../../Components/ProgressBar';
 import Loader from '../../Components/Loader';
+import NumberInput from '../../Components/NumberInput';
 
 import { useAnimationFrame } from '../../Hooks/useAnimationFrame';
 
@@ -9,7 +10,7 @@ import classes from './Rates.module.css';
 
 import CountryData from '../../Libs/Countries.json';
 import countryToCurrency from '../../Libs/CountryCurrency.json';
-import NumberInput from '../../Components/NumberInput';
+import { calculateExchangeAmount, calculateExchangeAmountWithOFXMarkup } from '../../Utils/calculator';
 
 let countries = CountryData.CountryCodes;
 
@@ -19,6 +20,7 @@ const Rates = () => {
 
     const [fromAmount, setFromAmount] = useState<number | undefined>(0);
     const [toAmount, setToAmount] = useState<number | undefined>(0);
+    const [toOFXAmount, setToOFXAmount] = useState<number | undefined>(0);
 
     const [exchangeRate, setExchangeRate] = useState(0.7456);
     const [progression, setProgression] = useState(0);
@@ -49,6 +51,18 @@ const Rates = () => {
         });
     });
 
+    const calculateAmounts = (amount: number | undefined) => {
+        setFromAmount(amount);
+        if (amount === undefined || amount === 0) {
+            setToAmount(0);
+            setToOFXAmount(0);
+        } else {
+            console.log('should not be here');
+            setToAmount(calculateExchangeAmount(amount, exchangeRate));
+            setToOFXAmount(calculateExchangeAmountWithOFXMarkup(amount, exchangeRate));
+        }
+    };
+
     return (
         <div className={classes.container}>
             <div className={classes.content}>
@@ -73,7 +87,7 @@ const Rates = () => {
                         <NumberInput
                             label="From"
                             value={fromAmount}
-                            setValue={setFromAmount}
+                            setValue={calculateAmounts}
                             style={{ marginTop: '20px' }}
                         />
                     </div>
@@ -102,9 +116,14 @@ const Rates = () => {
                             style={{ marginLeft: '20px' }}
                         />
                         <NumberInput
-                            label="From"
+                            label="To"
                             value={toAmount}
-                            setValue={setToAmount}
+                            style={{ marginTop: '20px', marginLeft: '20px' }}
+                            disabled
+                        />
+                        <NumberInput
+                            label="To (OFX)"
+                            value={toOFXAmount}
                             style={{ marginTop: '20px', marginLeft: '20px' }}
                             disabled
                         />
