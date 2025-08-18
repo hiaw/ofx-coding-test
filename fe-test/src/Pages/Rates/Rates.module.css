@@ -43,6 +43,13 @@
     opacity: 0.7;
 }
 
+.ofxRate {
+    margin-top: 35px;
+    font-size: 18px;
+    color: #142557;
+    opacity: 0.7;
+}
+
 .flag {
     margin-right: 10px;
     width: 26px;

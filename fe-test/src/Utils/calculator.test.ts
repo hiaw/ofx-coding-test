@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { calculateExchangeAmount, calculateExchangeAmountWithOFXMarkup } from './calculator';
+import { calculateExchangeAmount, calculateExchangeAmountWithOFXMarkup, calculateOFXExchangeRate } from './calculator';
 
 describe('calculator', () => {
     describe('calculateExchangeAmount', () => {
@@ -12,9 +12,16 @@ describe('calculator', () => {
         });
     });
 
+    describe('calculateOFXExchangeRate', () => {
+        it('should handle normal calculation', () => {
+            expect(calculateOFXExchangeRate(1)).toBe(0.995);
+        });
+    });
+
     describe('calculateExchangeAmountWithOFXMarkup', () => {
         it('should handle normal calculation', () => {
-            expect(calculateExchangeAmountWithOFXMarkup(1, 1.0)).toBe(0.95);
+            expect(calculateExchangeAmountWithOFXMarkup(1, 1.0)).toBe(0.995);
+            expect(calculateExchangeAmountWithOFXMarkup(1, 50)).toBe(49.75);
         });
     });
 });

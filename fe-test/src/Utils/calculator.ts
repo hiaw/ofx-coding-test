@@ -1,4 +1,4 @@
-export const OFX_MARKUP_RATE = 0.05;
+export const OFX_MARKUP_RATE = 0.005;
 export const ROUNDING_DIGITS = 4;
 
 const rounded = (value: number) => {
@@ -10,6 +10,10 @@ export const calculateExchangeAmount = (amount: number, rate: number) => {
     return rounded(amount * rate);
 };
 
+export const calculateOFXExchangeRate = (rate: number) => {
+    return rounded(rate * (1 - OFX_MARKUP_RATE));
+};
+
 export const calculateExchangeAmountWithOFXMarkup = (amount: number, rate: number) => {
-    return rounded(amount * rate * (1 - OFX_MARKUP_RATE));
+    return rounded(calculateExchangeAmount(amount, calculateOFXExchangeRate(rate)));
 };

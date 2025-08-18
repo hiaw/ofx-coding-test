@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DropDown from '../../Components/DropDown';
 import ProgressBar from '../../Components/ProgressBar';
 import Loader from '../../Components/Loader';
@@ -10,7 +10,11 @@ import classes from './Rates.module.css';
 
 import CountryData from '../../Libs/Countries.json';
 import countryToCurrency from '../../Libs/CountryCurrency.json';
-import { calculateExchangeAmount, calculateExchangeAmountWithOFXMarkup } from '../../Utils/calculator';
+import {
+    calculateExchangeAmount,
+    calculateExchangeAmountWithOFXMarkup,
+    calculateOFXExchangeRate,
+} from '../../Utils/calculator';
 
 let countries = CountryData.CountryCodes;
 
@@ -23,6 +27,8 @@ const Rates = () => {
     const [toOFXAmount, setToOFXAmount] = useState<number | undefined>(0);
 
     const [exchangeRate, setExchangeRate] = useState(0.7456);
+    const [ofxExchangeRate, setOfxExchangeRate] = useState(0);
+
     const [progression, setProgression] = useState(0);
     const [loading, setLoading] = useState(false);
 
@@ -39,6 +45,12 @@ const Rates = () => {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        if (exchangeRate) {
+            setOfxExchangeRate(calculateOFXExchangeRate(exchangeRate));
+        }
+    }, [exchangeRate, setOfxExchangeRate]);
 
     // Demo progress bar moving :)
     useAnimationFrame(!loading, (deltaTime) => {
@@ -97,7 +109,8 @@ const Rates = () => {
                             <img src="/img/icons/Transfer.svg" alt="Transfer icon" />
                         </div>
 
-                        <div className={classes.rate}>{exchangeRate}</div>
+                        <div className={classes.rate}>Normal {exchangeRate}</div>
+                        <div className={classes.ofxRate}>OFX {ofxExchangeRate}</div>
                     </div>
 
                     <div>
