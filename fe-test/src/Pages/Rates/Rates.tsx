@@ -9,12 +9,16 @@ import classes from './Rates.module.css';
 
 import CountryData from '../../Libs/Countries.json';
 import countryToCurrency from '../../Libs/CountryCurrency.json';
+import NumberInput from '../../Components/NumberInput';
 
 let countries = CountryData.CountryCodes;
 
 const Rates = () => {
     const [fromCurrency, setFromCurrency] = useState('AU');
     const [toCurrency, setToCurrency] = useState('US');
+
+    const [fromAmount, setFromAmount] = useState(0);
+    const [toAmount, setToAmount] = useState(0);
 
     const [exchangeRate, setExchangeRate] = useState(0.7456);
     const [progression, setProgression] = useState(0);
@@ -66,6 +70,12 @@ const Rates = () => {
                             }}
                             style={{ marginRight: '20px' }}
                         />
+                        <NumberInput
+                            label="From"
+                            value={fromAmount}
+                            setValue={setFromAmount}
+                            style={{ marginTop: '20px' }}
+                        />
                     </div>
 
                     <div className={classes.exchangeWrapper}>
@@ -90,6 +100,13 @@ const Rates = () => {
                                 setToCurrency(key);
                             }}
                             style={{ marginLeft: '20px' }}
+                        />
+                        <NumberInput
+                            label="From"
+                            value={toAmount}
+                            setValue={setToAmount}
+                            style={{ marginTop: '20px', marginLeft: '20px' }}
+                            disabled
                         />
                     </div>
                 </div>

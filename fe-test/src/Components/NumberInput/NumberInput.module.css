@@ -1,0 +1,9 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    max-width: 400px;
+
+    font-family: 'Nunito Sans';
+    color: #0b1a3f;
+}
