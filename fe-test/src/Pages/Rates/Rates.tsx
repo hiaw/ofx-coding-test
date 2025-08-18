@@ -97,7 +97,7 @@ const Rates = () => {
                             style={{ marginRight: '20px' }}
                         />
                         <NumberInput
-                            label="From"
+                            label="From Amount"
                             value={fromAmount}
                             setValue={calculateAmounts}
                             style={{ marginTop: '20px' }}
@@ -129,13 +129,13 @@ const Rates = () => {
                             style={{ marginLeft: '20px' }}
                         />
                         <NumberInput
-                            label="To"
+                            label="To Amount"
                             value={toAmount}
                             style={{ marginTop: '20px', marginLeft: '20px' }}
                             disabled
                         />
                         <NumberInput
-                            label="To (OFX)"
+                            label="To Amount (OFX)"
                             value={toOFXAmount}
                             style={{ marginTop: '20px', marginLeft: '20px' }}
                             disabled
