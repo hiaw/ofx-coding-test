@@ -21,7 +21,11 @@
         { "name": "Czech Republic", "countryCode": "+420", "code": "CZ" },
         { "name": "Denmark", "countryCode": "+45", "code": "DK" },
         { "name": "Djibouti", "countryCode": "+253", "code": "DJ" },
-        { "name": "Falkland Islands (Malvinas)", "countryCode": "+500", "code": "FK" },
+        {
+            "name": "Falkland Islands (Malvinas)",
+            "countryCode": "+500",
+            "code": "FK"
+        },
         { "name": "Fiji", "countryCode": "+679", "code": "FJ" },
         { "name": "French Polynesia", "countryCode": "+689", "code": "PF" },
         { "name": "Georgia", "countryCode": "+995", "code": "GE" },
@@ -38,7 +42,11 @@
         { "name": "Japan", "countryCode": "+81", "code": "JP" },
         { "name": "Jordan", "countryCode": "+962", "code": "JO" },
         { "name": "Kenya", "countryCode": "+254", "code": "KE" },
-        { "name": "Korea, Republic of South Korea", "countryCode": "+82", "code": "KR" },
+        {
+            "name": "Korea, Republic of South Korea",
+            "countryCode": "+82",
+            "code": "KR"
+        },
         { "name": "Kuwait", "countryCode": "+965", "code": "KW" },
         { "name": "Lesotho", "countryCode": "+266", "code": "LS" },
         { "name": "Madagascar", "countryCode": "+261", "code": "MG" },
@@ -59,8 +67,16 @@
         { "name": "Poland", "countryCode": "+48", "code": "PL" },
         { "name": "Qatar", "countryCode": "+974", "code": "QA" },
         { "name": "Romania", "countryCode": "+40", "code": "RO" },
-        { "name": "Saint Helena, Ascension and Tristan Da Cunha", "countryCode": "+290", "code": "SH" },
-        { "name": "Sao Tome and Principe", "countryCode": "+239", "code": "ST" },
+        {
+            "name": "Saint Helena, Ascension and Tristan Da Cunha",
+            "countryCode": "+290",
+            "code": "SH"
+        },
+        {
+            "name": "Sao Tome and Principe",
+            "countryCode": "+239",
+            "code": "ST"
+        },
         { "name": "Saudi Arabia", "countryCode": "+966", "code": "SA" },
         { "name": "Serbia", "countryCode": "+381", "code": "RS" },
         { "name": "Seychelles", "countryCode": "+248", "code": "SC" },

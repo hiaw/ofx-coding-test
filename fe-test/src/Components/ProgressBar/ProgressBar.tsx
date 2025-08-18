@@ -15,7 +15,9 @@ const ProgressBar = (props) => {
         <div ref={ref} className={classes.base} style={props.style}>
             <div
                 className={`${classes.progress} ${props.animationClass}`}
-                style={{ transform: `translate(-${width * (1 - props.progress)}px)` }}
+                style={{
+                    transform: `translate(-${width * (1 - props.progress)}px)`,
+                }}
             ></div>
         </div>
     );
