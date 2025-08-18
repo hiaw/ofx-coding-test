@@ -17,8 +17,8 @@ const Rates = () => {
     const [fromCurrency, setFromCurrency] = useState('AU');
     const [toCurrency, setToCurrency] = useState('US');
 
-    const [fromAmount, setFromAmount] = useState(0);
-    const [toAmount, setToAmount] = useState(0);
+    const [fromAmount, setFromAmount] = useState<number | undefined>(0);
+    const [toAmount, setToAmount] = useState<number | undefined>(0);
 
     const [exchangeRate, setExchangeRate] = useState(0.7456);
     const [progression, setProgression] = useState(0);

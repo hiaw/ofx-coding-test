@@ -5,8 +5,8 @@ import classes from './NumberInput.module.css';
 interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
     className?: string;
     label: string;
-    value: number;
-    setValue: (amount: number) => void;
+    value?: number;
+    setValue: (amount?: number) => void;
     style?: CSSProperties | undefined;
 }
 
@@ -14,9 +14,17 @@ const TextInput = (props: TextInputProps) => {
     const { className, label, value, setValue, style, ...otherProps } = props;
 
     const onTextChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const newValue = parseFloat(e.target?.value);
-        if (newValue) {
-            setValue(newValue);
+        const newValue = e.target?.value;
+        if (newValue.length === 0) {
+            setValue(undefined);
+        }
+
+        const newNumber = parseFloat(newValue);
+
+        if (newNumber === 0) {
+            setValue(0);
+        } else if (newNumber) {
+            setValue(newNumber);
         }
     };
 
