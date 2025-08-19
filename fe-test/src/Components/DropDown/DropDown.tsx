@@ -22,7 +22,7 @@ const DropDown = (props: DropDownProps) => {
 
     useEffect(() => {
         const closeDropDown = (e: Event) => {
-            if (open && dropDown.current && !dropDown.current?.contains(e.target as Node)) {
+            if (dropDown.current && !dropDown.current?.contains(e.target as Node)) {
                 setOpen(false);
             }
         };

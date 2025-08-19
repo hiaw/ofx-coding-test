@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import DropDown from '../../Components/DropDown';
 import ProgressBar from '../../Components/ProgressBar';
 import Loader from '../../Components/Loader';
@@ -38,16 +38,17 @@ const Rates = () => {
         <img alt={code || ''} src={`/img/flags/${code || ''}.svg`} width="20px" className={classes.flag} />
     );
 
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         if (!loading) {
             setLoading(true);
 
             try {
-                const buy = countryToCurrency[fromCurrency as keyof typeof countryToCurrency];
-                const sell = countryToCurrency[toCurrency as keyof typeof countryToCurrency];
+                const buy = countryToCurrency[toCurrency as keyof typeof countryToCurrency];
+                const sell = countryToCurrency[fromCurrency as keyof typeof countryToCurrency];
                 const rateResponse = await getRate(buy, sell);
                 if (rateResponse && rateResponse.retailRate) {
                     setExchangeRate(rateResponse.retailRate);
+                    setOFXExchangeRate(calculateOFXExchangeRate(rateResponse.retailRate));
                 }
                 setError(undefined);
             } catch (error) {
@@ -56,13 +57,19 @@ const Rates = () => {
 
             setLoading(false);
         }
-    };
+    }, [toCurrency, fromCurrency]);
 
+    // run once on initial render
     useEffect(() => {
         if (exchangeRate) {
             setOFXExchangeRate(calculateOFXExchangeRate(exchangeRate));
         }
-    }, [exchangeRate, setOFXExchangeRate]);
+    }, []);
+
+    // run each time the from or to currency changed
+    useEffect(() => {
+        fetchData();
+    }, [fetchData, fromCurrency, toCurrency]);
 
     // Demo progress bar moving :)
     useAnimationFrame(!loading, (deltaTime) => {
@@ -81,7 +88,6 @@ const Rates = () => {
             setToAmount(0);
             setToOFXAmount(0);
         } else {
-            console.log('should not be here');
             setToAmount(calculateExchangeAmount(amount, exchangeRate));
             setToOFXAmount(calculateExchangeAmountWithOFXMarkup(amount, exchangeRate));
         }
@@ -105,7 +111,6 @@ const Rates = () => {
                             }))}
                             setSelected={(key: string) => {
                                 setFromCurrency(key);
-                                fetchData();
                             }}
                             style={{ marginRight: '20px' }}
                         />
@@ -122,8 +127,12 @@ const Rates = () => {
                             <img src="/img/icons/Transfer.svg" alt="Transfer icon" />
                         </div>
 
-                        <div className={classes.rate}>Normal {exchangeRate}</div>
-                        <div className={classes.ofxRate}>OFX {oFXExchangeRate}</div>
+                        <div className={classes.rate} data-testid="normalExchangeRate">
+                            Normal {exchangeRate}
+                        </div>
+                        <div className={classes.ofxRate} data-testid="ofxExchangeRate">
+                            OFX {oFXExchangeRate}
+                        </div>
                     </div>
 
                     <div>
@@ -138,7 +147,6 @@ const Rates = () => {
                             }))}
                             setSelected={(key: string) => {
                                 setToCurrency(key);
-                                fetchData();
                             }}
                             style={{ marginLeft: '20px' }}
                         />
