@@ -15,6 +15,7 @@ import {
     calculateExchangeAmountWithOFXMarkup,
     calculateOFXExchangeRate,
 } from '../../Utils/calculator';
+import { getRate } from '../../Utils/paytronAPI';
 
 let countries = CountryData.CountryCodes;
 
@@ -27,10 +28,11 @@ const Rates = () => {
     const [toOFXAmount, setToOFXAmount] = useState<number | undefined>(0);
 
     const [exchangeRate, setExchangeRate] = useState(0.7456);
-    const [ofxExchangeRate, setOfxExchangeRate] = useState(0);
+    const [oFXExchangeRate, setOFXExchangeRate] = useState(0);
 
     const [progression, setProgression] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | undefined>(undefined);
 
     const Flag = ({ code }: { code: string }) => (
         <img alt={code || ''} src={`/img/flags/${code || ''}.svg`} width="20px" className={classes.flag} />
@@ -40,7 +42,17 @@ const Rates = () => {
         if (!loading) {
             setLoading(true);
 
-            await new Promise((resolve) => setTimeout(resolve, 2000));
+            try {
+                const buy = countryToCurrency[fromCurrency as keyof typeof countryToCurrency];
+                const sell = countryToCurrency[toCurrency as keyof typeof countryToCurrency];
+                const rateResponse = await getRate(buy, sell);
+                if (rateResponse && rateResponse.retailRate) {
+                    setExchangeRate(rateResponse.retailRate);
+                }
+                setError(undefined);
+            } catch (error) {
+                setError('Error getting rates');
+            }
 
             setLoading(false);
         }
@@ -48,9 +60,9 @@ const Rates = () => {
 
     useEffect(() => {
         if (exchangeRate) {
-            setOfxExchangeRate(calculateOFXExchangeRate(exchangeRate));
+            setOFXExchangeRate(calculateOFXExchangeRate(exchangeRate));
         }
-    }, [exchangeRate, setOfxExchangeRate]);
+    }, [exchangeRate, setOFXExchangeRate]);
 
     // Demo progress bar moving :)
     useAnimationFrame(!loading, (deltaTime) => {
@@ -93,6 +105,7 @@ const Rates = () => {
                             }))}
                             setSelected={(key: string) => {
                                 setFromCurrency(key);
+                                fetchData();
                             }}
                             style={{ marginRight: '20px' }}
                         />
@@ -110,7 +123,7 @@ const Rates = () => {
                         </div>
 
                         <div className={classes.rate}>Normal {exchangeRate}</div>
-                        <div className={classes.ofxRate}>OFX {ofxExchangeRate}</div>
+                        <div className={classes.ofxRate}>OFX {oFXExchangeRate}</div>
                     </div>
 
                     <div>
@@ -125,6 +138,7 @@ const Rates = () => {
                             }))}
                             setSelected={(key: string) => {
                                 setToCurrency(key);
+                                fetchData();
                             }}
                             style={{ marginLeft: '20px' }}
                         />
@@ -148,6 +162,7 @@ const Rates = () => {
                     animationClass={loading ? classes.slow : ''}
                     style={{ marginTop: '20px' }}
                 />
+                {error && <div className={classes.error}>{error}</div>}
 
                 {loading && (
                     <div className={classes.loaderWrapper}>
